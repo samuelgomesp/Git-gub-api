@@ -15,9 +15,11 @@ interface GithubRepoResponse {
     stargazers_count: number
 }
 
+main()
+
 const users: GithubUserResponse[] = []
 
-export async function fetchUser(username: string) {
+async function fetchUser(username: string) {
     const response = await fetch(`https://api.github.com/users/${username}`)
     const user: GithubUserResponse = await response.json()
 
@@ -37,7 +39,7 @@ export async function fetchUser(username: string) {
     }
 }
 
-export function showUsers(){
+function showUsers(){
     let usersList: string = 'Usuários Registrados:\n'
     let count: number = 0
     users.forEach((user: {
@@ -60,25 +62,18 @@ export function showUsers(){
     console.log(usersList)
 }
 
-export function findUser( username: string ){
+function findUser( username: string ){
     const user = users.find(userObj => userObj.login === username)
     return user ?? false
 }
 
-export async function showReposUser(username: string) {
+async function showReposUser(username: string) {
     const user = findUser(username)
     
     if(user) {
         const reposData = await fetch(user.repos_url)
         const repos: GithubRepoResponse[] = await reposData.json()
-        console.log(
-            `Estes são alguns repositórios do usuário ${username}\n` + 
-            `\nid: ${user.id}` +
-            `\nlogin: ${user.login}` +
-            `\nNome: ${user.name}` +
-            `\nBio: ${user.bio}` +
-            `\nRepositórios públicos: ${user.public_repos}`
-            )
+        console.log(`Estes são alguns repositórios do usuário ${username}\n`)
         for(let i: number = 0; i <= 1; i++){
             console.log(
                 `\nRepositório ${i + 1}` +
@@ -94,7 +89,7 @@ export async function showReposUser(username: string) {
 
 }
 
-export function showTotalRepos(){
+function showTotalRepos(){
     if (!Array.isArray(users) || users.length === 0) {
         console.log('Nenhum usuário cadastrado.');
         return;
@@ -108,7 +103,7 @@ export function showTotalRepos(){
     return totalRepos
 }
 
-export function showTopFiveUsers(){
+function showTopFiveUsers(){
     const filteredUsers = users.filter((obj => obj.public_repos !== 0))
 
     const sortedUsers = filteredUsers.sort((a, b) => b.public_repos - a.public_repos).slice(0, 5)
@@ -127,4 +122,16 @@ export function showTopFiveUsers(){
 
     console.log(consoleTopUsers)
     return sortedUsers
+}
+
+async function main(){
+    await fetchUser('samuelgomesp')
+    console.log('-------------------------------------------------------')
+    await showReposUser('samuelgomesp')
+    console.log('-------------------------------------------------------')
+    showUsers()
+    console.log('-------------------------------------------------------')
+    showTotalRepos()
+    console.log('-------------------------------------------------------')
+    showTopFiveUsers()
 }

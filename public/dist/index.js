@@ -7,8 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+main();
 const users = [];
-export function fetchUser(username) {
+function fetchUser(username) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch(`https://api.github.com/users/${username}`);
         const user = yield response.json();
@@ -26,7 +27,7 @@ export function fetchUser(username) {
         }
     });
 }
-export function showUsers() {
+function showUsers() {
     let usersList = 'Usuários Registrados:\n';
     let count = 0;
     users.forEach((user) => {
@@ -41,22 +42,17 @@ export function showUsers() {
     });
     console.log(usersList);
 }
-export function findUser(username) {
+function findUser(username) {
     const user = users.find(userObj => userObj.login === username);
     return user !== null && user !== void 0 ? user : false;
 }
-export function showReposUser(username) {
+function showReposUser(username) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = findUser(username);
         if (user) {
             const reposData = yield fetch(user.repos_url);
             const repos = yield reposData.json();
-            console.log(`Estes são alguns repositórios do usuário ${username}\n` +
-                `\nid: ${user.id}` +
-                `\nlogin: ${user.login}` +
-                `\nNome: ${user.name}` +
-                `\nBio: ${user.bio}` +
-                `\nRepositórios públicos: ${user.public_repos}`);
+            console.log(`Estes são alguns repositórios do usuário ${username}\n`);
             for (let i = 0; i <= 1; i++) {
                 console.log(`\nRepositório ${i + 1}` +
                     `\n- Nome: ${repos[i].name}` +
@@ -70,7 +66,7 @@ export function showReposUser(username) {
         }
     });
 }
-export function showTotalRepos() {
+function showTotalRepos() {
     if (!Array.isArray(users) || users.length === 0) {
         console.log('Nenhum usuário cadastrado.');
         return;
@@ -81,7 +77,7 @@ export function showTotalRepos() {
     console.log(`O total de repositórios de todos os usuários cadastrados é de: ${totalRepos}`);
     return totalRepos;
 }
-export function showTopFiveUsers() {
+function showTopFiveUsers() {
     const filteredUsers = users.filter((obj => obj.public_repos !== 0));
     const sortedUsers = filteredUsers.sort((a, b) => b.public_repos - a.public_repos).slice(0, 5);
     let consoleTopUsers = `Top 5 Usuários com mais repositórios públicos:\n`;
@@ -94,4 +90,17 @@ export function showTopFiveUsers() {
     });
     console.log(consoleTopUsers);
     return sortedUsers;
+}
+function main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield fetchUser('samuelgomesp');
+        console.log('-------------------------------------------------------');
+        yield showReposUser('samuelgomesp');
+        console.log('-------------------------------------------------------');
+        showUsers();
+        console.log('-------------------------------------------------------');
+        showTotalRepos();
+        console.log('-------------------------------------------------------');
+        showTopFiveUsers();
+    });
 }
