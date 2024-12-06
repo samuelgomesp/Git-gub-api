@@ -30,9 +30,6 @@ Para instalação no Node visite o site https://nodejs.org/pt
 
 Para instalação do VSCode visite o site https://code.visualstudio.com/
 
-## 🔮 Implementações futuras
-1. Criar uma página responsiva onde as informações são melhor manipuladas e exibidas.
-
 ## 🔎 Status do Projeto
 
-![Badge em Desenvolvimento](https://img.shields.io/badge/Status-Em%20Desenvolvimento-green)
+![Badge em Desenvolvimento](https://img.shields.io/badge/Status-Finalizado-blue)
