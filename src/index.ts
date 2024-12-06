@@ -17,7 +17,7 @@ interface GithubRepoResponse {
 
 const users: GithubUserResponse[] = []
 
-async function fetchUser(username: string) {
+export async function fetchUser(username: string) {
     const response = await fetch(`https://api.github.com/users/${username}`)
     const user: GithubUserResponse = await response.json()
 
@@ -37,7 +37,7 @@ async function fetchUser(username: string) {
     }
 }
 
-function showUsers(){
+export function showUsers(){
     let usersList: string = 'Usuários Registrados:\n'
     let count: number = 0
     users.forEach((user: {
@@ -60,12 +60,12 @@ function showUsers(){
     console.log(usersList)
 }
 
-function findUser( username: string ){
+export function findUser( username: string ){
     const user = users.find(userObj => userObj.login === username)
     return user ?? false
 }
 
-async function showReposUser(username: string) {
+export async function showReposUser(username: string) {
     const user = findUser(username)
     
     if(user) {
@@ -94,7 +94,7 @@ async function showReposUser(username: string) {
 
 }
 
-function showTotalRepos(){
+export function showTotalRepos(){
     if (!Array.isArray(users) || users.length === 0) {
         console.log('Nenhum usuário cadastrado.');
         return;
@@ -108,7 +108,7 @@ function showTotalRepos(){
     return totalRepos
 }
 
-function showTopFiveUsers(){
+export function showTopFiveUsers(){
     const filteredUsers = users.filter((obj => obj.public_repos !== 0))
 
     const sortedUsers = filteredUsers.sort((a, b) => b.public_repos - a.public_repos).slice(0, 5)
@@ -128,4 +128,3 @@ function showTopFiveUsers(){
     console.log(consoleTopUsers)
     return sortedUsers
 }
-
